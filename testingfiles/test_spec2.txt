@@ -1,0 +1,7 @@
+"apiurl" =  "https://api.github.com/repos/{owner}/{repo}/issues/{number}/comments",
+"method" = "DELETE",
+"nooftests" = "10",
+"body"={
+    "username": "string",
+    "password": "string"
+}

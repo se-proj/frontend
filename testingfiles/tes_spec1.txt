@@ -1,0 +1,4 @@
+"apiurl" =  "http://localhost/api/";
+"method" = "GET",
+"nooftests" = "10",
+
