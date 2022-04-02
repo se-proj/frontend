@@ -1,5 +1,5 @@
-// import createServerFile from 'tool_name'
-import createServerFile from '../../../../tool_name/create_server/index.mjs'
+// import generate_test_files from 'tool_name'
+import generate_test_files from './../../../../tool_name/index.mjs'
 import path from 'path'
 
 // path.resolve() returns pwd
@@ -22,7 +22,16 @@ let server_settings = {
     ],
     mongoDBURI: "mongodb+srv://iitsemproject:iitsemproject889@cluster0.mpfjb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
     port: "5100",
-    mocha_testing_enabled: false, 
+    mocha_testing_enabled: true, 
 }
 
-createServerFile(server_settings)
+let test_settings = {
+	// // mongoose_schema: array of schemas/items (mandatory),
+    server_settings: server_settings,
+    // number_of_test_cases: int [default: 20],
+    // wrong_test_case_proportion: String [default: “40%”]
+    // apis: array of objects -> api (mandatory)
+}
+
+
+generate_test_files(test_settings)

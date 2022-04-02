@@ -1,4 +1,19 @@
+/**
+ * If there are any error in inputs, it is indicated by the global variable ERR_FLAG.
+ * When ERR_FLAG is set to true:
+ *      The program will NOT terminate and continue its normal executionunless it 
+ *      recognizes all the missing mandatory inputs in the program and then end the
+ *      execution without generating any file or writing any content.
+ * When ERR_FLAG is set to false:
+ *      The program will continue as programed, get all inputs and fit them in necessary 
+ *      locations in global strings and then generate a file and write the content into
+ *      the file. 
+ */
+
+
 import fs from 'fs'
+
+let ERR_FLAG = false
 
 let SERVER_FILE_NAME = ""
 let SERVER_FILE_TEXT = ""
@@ -158,27 +173,66 @@ const addServerSettings = (server_settings) => {
             port,
             mocha_testing_enabled,
         } = server_settings
-    
-    addServerFilePathName(server_path, server_file_name)
-    addImports(dependency_imports, user_imports)
-    addExpressParserMiddleware(data_post_limit)
-    addUserRoutes(user_routes)
-    addMongoDBURI(mongoDBURI)
-    addPort(port)
-    if(mocha_testing_enabled)
-        addMochaTestingPromise()
-    addLastRunBuildText()
 
-    SERVER_FILE_TEXT += BOILER_PLATE_DEPENDENCY_IMPORT + "\n"
-    SERVER_FILE_TEXT += BOILER_PLATE_USER_IMPORT + "\n"
-    SERVER_FILE_TEXT += "const app = express()\n"  + "\n"
-    SERVER_FILE_TEXT += EXPRESS_PARSER_MIDDLEWARE + "\n"
-    SERVER_FILE_TEXT += USER_ROUTES + "\n"
-    SERVER_FILE_TEXT += MONGODB_CONNECTION_URI
-    SERVER_FILE_TEXT += LOCALHOST_PORT + "\n"
-    if(mocha_testing_enabled)
-        SERVER_FILE_TEXT += MOCHA_TESTING_PROMISE + "\n"
-    SERVER_FILE_TEXT += LAST_RUN_BUILD_TEXT
+    if(server_path == undefined) {
+        console.log("Please include the path location where you want your test_server file to be generated under\"server_path\"")
+        ERR_FLAG = true
+    }
+    if(server_file_name == undefined) {
+        server_file_name = "test_server.js"
+    }
+    if(dependency_imports == undefined) {
+        dependency_imports = [
+            {package_import: "express", package_name: "express"},
+            {package_import: "bodyParser", package_name: "body-parser"},
+            {package_import: "mongoose", package_name: "mongoose"},
+            {package_import: "cors", package_name: "cors"},
+        ]
+    }
+    if(user_imports == undefined || user_imports == []) {
+        console.log("Please add the path of your API controllers in the server_settings under \"user_imports\"")
+        ERR_FLAG = true
+    }
+    if(data_post_limit == undefined) {
+        data_post_limit = "64mb"
+    }
+    if(user_routes == undefined || user_routes == []) {
+        console.log("No API route to use. Please add respective API routes to server_settings under \"user_routes\"")
+        ERR_FLAG = true
+    }
+    if(mongoDBURI == undefined) {
+        console.log("Please provide a Mongo DB Atlas URI under \"mongoDBURI\"")
+        ERR_FLAG = true
+    }
+    if(port == undefined) {
+        port = "5100"
+    }
+    if(mocha_testing_enabled == undefined) {
+        mocha_testing_enabled = true
+    }
+    
+    if(!ERR_FLAG) {
+        addServerFilePathName(server_path, server_file_name)
+        addImports(dependency_imports, user_imports)
+        addExpressParserMiddleware(data_post_limit)
+        addUserRoutes(user_routes)
+        addMongoDBURI(mongoDBURI)
+        addPort(port)
+        if(mocha_testing_enabled)
+            addMochaTestingPromise()
+        addLastRunBuildText()
+
+        SERVER_FILE_TEXT += BOILER_PLATE_DEPENDENCY_IMPORT + "\n"
+        SERVER_FILE_TEXT += BOILER_PLATE_USER_IMPORT + "\n"
+        SERVER_FILE_TEXT += "const app = express()\n"  + "\n"
+        SERVER_FILE_TEXT += EXPRESS_PARSER_MIDDLEWARE + "\n"
+        SERVER_FILE_TEXT += USER_ROUTES + "\n"
+        SERVER_FILE_TEXT += MONGODB_CONNECTION_URI
+        SERVER_FILE_TEXT += LOCALHOST_PORT + "\n"
+        if(mocha_testing_enabled)
+            SERVER_FILE_TEXT += MOCHA_TESTING_PROMISE + "\n"
+        SERVER_FILE_TEXT += LAST_RUN_BUILD_TEXT
+    }
 }
 
 /**
@@ -188,9 +242,11 @@ const addServerSettings = (server_settings) => {
 const createServerFile = (server_settings) => {
     addServerSettings(server_settings)
 
-    fs.writeFile(SERVER_FILE_NAME, SERVER_FILE_TEXT, (err) => {
-        if(err) throw err
-    })
+    if(!ERR_FLAG) {
+        fs.writeFile(SERVER_FILE_NAME, SERVER_FILE_TEXT, (err) => {
+            if(err) throw err
+        })
+    }
 }
 
 export default createServerFile

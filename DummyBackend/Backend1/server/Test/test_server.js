@@ -16,6 +16,9 @@ app.use('/posts', postRoutes)
 const dbURI = 'mongodb+srv://iitsemproject:iitsemproject889@cluster0.mpfjb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 const PORT = process.env.PORT || 5100
 
+// ES6 Promises (for enabling Mocha Testing)
+mongoose.Promise = global.Promise
+
 const connectDB = async () => {
 	try {
 		await mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -29,3 +32,5 @@ connectDB()
 
 app.listen(PORT, () => console.log(`Server Running on Port: http://localhost:${PORT}`))
 mongoose.set('useFindAndModify', false)
+
+export default app;
