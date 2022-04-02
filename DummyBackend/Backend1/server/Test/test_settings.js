@@ -28,8 +28,8 @@ let server_settings = {
 let test_settings = {
 	// // mongoose_schema: array of schemas/items (mandatory),
     server_settings: server_settings,
-    // number_of_test_cases: int [default: 20],
-    // wrong_test_case_proportion: String [default: “40%”]
+    number_of_test_cases: 10,
+    wrong_test_case_proportion: "40%",
     // apis: array of objects -> api (mandatory)
 }
 
