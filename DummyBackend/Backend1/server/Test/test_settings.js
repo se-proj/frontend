@@ -1,5 +1,5 @@
 // import generate_test_files from 'tool_name'
-import generate_test_files from './../../../../tool_name/index.mjs'
+import generate_test_files from '../../../../tool_name/index.mjs'
 import path from 'path'
 import { NONAME } from 'dns'
 
@@ -45,7 +45,7 @@ let getPostsAPI = {
     description: "GET all posts FROM /posts",
 	url: "/posts",
 	type: "GET",
-    input_schema: undefined,
+    input_schema: null,
     output_schema: {
         title: String,
         message: String,
