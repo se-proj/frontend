@@ -1,6 +1,7 @@
 // import generate_test_files from 'tool_name'
 import generate_test_files from './../../../../tool_name/index.mjs'
 import path from 'path'
+import { NONAME } from 'dns'
 
 // path.resolve() returns pwd
 
@@ -30,7 +31,66 @@ let test_settings = {
     server_settings: server_settings,
     number_of_test_cases: 10,
     wrong_test_case_proportion: "40%",
-    // apis: array of objects -> api (mandatory)
+    apis: [
+        getPostsAPI,
+        createPostAPI,
+        getPostAPI,
+        updatePostAPI,
+        deletePostAPI,
+        likePostAPI
+    ]
+}
+
+let getPostsAPI = {
+    description: "GET all posts FROM /posts",
+	url: "/posts",
+	type: "GET",
+    input_schema: undefined,
+    output_schema: {
+        title: String,
+        message: String,
+        creator: String,
+        tags: [String],
+        selectedFile: String,
+        likeCount: {
+            type: Number,
+            default: 0,
+        },
+        createdAt: {
+            type: Date,
+            default: new Date(),
+        },
+    }
+}
+
+let createPostAPI = {
+    description: "CREATE a post IN /posts",
+	url: "/posts",
+	type: "POST",
+}
+
+let getPostAPI = {
+    description: "GET a post with a specific id FROM /posts/:id",
+	url: "/posts/:id",
+	type: "GET",
+}
+
+let updatePostAPI = {
+    description: "UPDATE a post with a specific id IN /posts/:id",
+	url: "/posts/:id",
+	type: "PATCH",
+}
+
+let deletePostAPI = {
+    description: "DELETE a post with a specific id FROM /posts/:id",
+	url: "/posts/:id",
+	type: "DELETE",
+}
+
+let likePostAPI = {
+    description: "UPDATE the amount a likes a specific post gets IN /posts/:id/likePost",
+	url: "/posts/:id/likePost",
+	type: "PATCH",
 }
 
 
