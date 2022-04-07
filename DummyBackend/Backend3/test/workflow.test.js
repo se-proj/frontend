@@ -31,6 +31,7 @@ describe('User workflow tests', () => {
                         "email": "mail@petersen.com",
                         "password": "123456"
                     })
+                    //checking response if matches the input
                     .end((err, res) => {
                         // Asserts                        
                         expect(res.status).to.be.equal(200);

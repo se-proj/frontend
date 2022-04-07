@@ -31,8 +31,7 @@ function checkDeleteApi( url, noOfTestCases, method, schema) {
                 var randomboolean = Math.random() >= 0.5;
                 client[firstattribute] = randomboolean;
             }
-            if (secondattributetype ==
-                "string") {
+            if (secondattributetype ==="string") {
                 var randomstring = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
                 client[secondattribute] = randomstring;
             }

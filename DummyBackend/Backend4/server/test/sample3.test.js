@@ -60,21 +60,35 @@ const postPostMessage = async () => {
     }
 }
 
+
+// console.log(res.method)
+// console.log(res.path)
+// console.log(res._ended)
+// console.log(res.aborted)
+// console.log(res.host)
+
 const getPostMessage = async () => {
     console.log("GET description")
     try {
         const res = await SERVER.get(`/posts`)
+        console.log(res.status)
         console.log(res.data)
-        // expect(res.data).to.have.status(200)
-        // expect(res.data).to.be.a('array')
-        // const len = res.data.length
-        // expect(res.data).to.equal(4)
-        // for(let i = 0; i < len; i++) {
-        //     expect(res.data[i]).to.have.property("title", posts[i].title)
-        //     expect(res.data[i]).to.have.property("message", posts[i].message)
-        //     expect(res.data[i]).to.have.property("creator", posts[i].creator)
-        //     expect(res.data[i]).to.have.property("likes", posts[i].likes)
-        // }
+
+        if(res.status !== 200)
+            console.log("Not 200")
+        console.log(typeof(res.data))
+        if(typeof(res.data) !== 'array')
+            console.log("Not array")
+        
+        const len = res.data.length
+        if(res.data.length !== len)
+            console.log("Not same length")
+        for(let i = 0; i < len; i++) {
+            // expect(res.data[i]).to.have.property("title", posts[i].title)
+            // expect(res.data[i]).to.have.property("message", posts[i].message)
+            // expect(res.data[i]).to.have.property("creator", posts[i].creator)
+            // expect(res.data[i]).to.have.property("likes", posts[i].likes)
+        }
     }
     catch(err) {
         console.log("Error while get: PostMessage")
@@ -91,9 +105,8 @@ const asyncTasks = [
 ]
 
 // before()
-// before()
 // postPostMessage()
-// getPostMessage()
+getPostMessage()
 
 // const apiEndpoints = ["first", "second", "third"];
 
