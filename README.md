@@ -10,7 +10,7 @@
 
 1) [Problem](#problem)
 2) [Solution](#solution)
-    1) [Existing Solutions](#exsting-solution)
+    1) [Existing Solutions](#existing-solutions)
     2) [Our Solution](#our-solution)
 3) [CWEs planned](#cwes-planned)
     1) [Release 1](#release-1)
@@ -23,9 +23,8 @@
     1) [Working](#working)
     2) [Recommendations](#recommendations)
 6) [Package Dependencies](#package-dependencies)
-7) []()
-8) [Repo Folder Structure](#repo-folder-structure)
-9) [Team and Contact](#team-and-contact)
+7) [Repo Folder Structure](#repo-folder-structure)
+8) [Team and Contact](#team-and-contact)
 
 <br>
 
@@ -178,7 +177,7 @@ RUNNING TOOL
 
 <br>
 
-* Automate the MAPPING process by using ML and directly reading the required API files.
+* Automate the MAPPING process by scanning and directly reading the required API files.
 * API files are provided as input to the tool which will identify the APIs.
 
 <br>
@@ -238,13 +237,13 @@ Coffee-break Files
 
 <br>
 
-## Initial Setup
+<!-- ## Initial Setup
 
 <br>
 
 
 
-<br>
+<br> -->
 
 ## Repo Folder Structure
 
@@ -256,7 +255,11 @@ Coffee-break Files
 > testingfiles  
 > tool_name  
 
-
+* **Dummy Backend:** This folder contains multiple backends taken from many public repositories used for testing puroposes with tool.
+* **ProjectFiles:** Contains all the documentation for the project.
+* **TestingGrounds:** Used for minor testing purposes of individual components.
+* **testingfiles:** Used for minor testing purposes of individual components.
+* **coffee_break:** Temporary file storage for our tool used for importing direct files and functions into Dummy Backend for testing.
 
 <br>
 

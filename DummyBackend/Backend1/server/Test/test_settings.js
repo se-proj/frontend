@@ -1,5 +1,5 @@
 // import generate_test_files from 'tool_name'
-import generate_test_files from '../../../../tool_name/index.mjs'
+import generate_test_files from '../../../../coffee_break/index.mjs'
 import path from 'path'
 import { NONAME } from 'dns'
 
