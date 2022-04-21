@@ -1,7 +1,7 @@
 /**
  * If there are any error in inputs, it is indicated by the global variable ERR_FLAG.
  * When ERR_FLAG is set to true:
- *      The program will NOT terminate and continue its normal executionunless it 
+ *      The program will NOT terminate and continue its normal execution unless it 
  *      recognizes all the missing mandatory inputs in the program and then end the
  *      execution without generating any file or writing any content.
  * When ERR_FLAG is set to false:
@@ -179,7 +179,7 @@ const addServerSettings = (server_settings) => {
         ERR_FLAG = true
     }
     if(server_file_name == undefined) {
-        server_file_name = "test_server.js"
+        server_file_name = "server.test.js"
     }
     if(dependency_imports == undefined) {
         dependency_imports = [
