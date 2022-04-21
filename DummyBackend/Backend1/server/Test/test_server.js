@@ -32,5 +32,3 @@ connectDB()
 
 app.listen(PORT, () => console.log(`Server Running on Port: http://localhost:${PORT}`))
 mongoose.set('useFindAndModify', false)
-
-export default app;

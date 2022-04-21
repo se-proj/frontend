@@ -81,13 +81,14 @@ const getPostMessage = async () => {
             console.log("Not array")
         
         const len = res.data.length
-        if(res.data.length !== len)
+        if(res.data.length !== posts.length)
             console.log("Not same length")
         for(let i = 0; i < len; i++) {
             // expect(res.data[i]).to.have.property("title", posts[i].title)
             // expect(res.data[i]).to.have.property("message", posts[i].message)
             // expect(res.data[i]).to.have.property("creator", posts[i].creator)
             // expect(res.data[i]).to.have.property("likes", posts[i].likes)
+
         }
     }
     catch(err) {
@@ -98,15 +99,24 @@ const getPostMessage = async () => {
 
 // const starterPromise = Promise.resolve(null);
 
-const asyncTasks = [
-    {task: before},
-    {task: postPostMessage},
-    {task: getPostMessage},
-]
+// const asyncTasks = [
+//     {task: before},
+//     {task: postPostMessage},
+//     {task: getPostMessage},
+// ]
 
-// before()
-// postPostMessage()
-getPostMessage()
+
+setTimeout(() => {
+    before()
+}, 2000)
+setTimeout(() => {
+    postPostMessage()
+}, 4000)
+setTimeout(() => {
+    getPostMessage()
+}, 6000)
+
+
 
 // const apiEndpoints = ["first", "second", "third"];
 

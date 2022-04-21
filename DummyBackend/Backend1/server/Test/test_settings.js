@@ -31,14 +31,14 @@ let test_settings = {
     server_settings: server_settings,
     number_of_test_cases: 10,
     wrong_test_case_proportion: "40%",
-    apis: [
-        getPostsAPI,
-        createPostAPI,
-        getPostAPI,
-        updatePostAPI,
-        deletePostAPI,
-        likePostAPI
-    ]
+    // apis: [
+    //     getPostsAPI,
+    //     createPostAPI,
+    //     getPostAPI,
+    //     updatePostAPI,
+    //     deletePostAPI,
+    //     likePostAPI
+    // ]
 }
 
 let getPostsAPI = {
