@@ -20,6 +20,7 @@ let SERVER_FILE_TEXT = ""
 
 let BOILER_PLATE_DEPENDENCY_IMPORT = ""
 let BOILER_PLATE_USER_IMPORT = ""
+let BOILER_PLATE_ROUTER_IMPORT = ""
 
 let EXPRESS_PARSER_MIDDLEWARE = ""
 let USER_ROUTES = ""
@@ -60,7 +61,7 @@ const addServerFilePathName = (server_path, server_file_name) => {
  * @param {*} dependency_imports 
  * @param {*} user_imports 
  */
-const addImports = (dependency_imports, user_imports) => {
+const addImports = (dependency_imports, user_imports, router_file_name) => {
     dependency_imports.forEach((dependencyImport) => {
         BOILER_PLATE_DEPENDENCY_IMPORT += "import "
         BOILER_PLATE_DEPENDENCY_IMPORT += dependencyImport.package_import
@@ -76,6 +77,10 @@ const addImports = (dependency_imports, user_imports) => {
         BOILER_PLATE_USER_IMPORT += userImport.user_import_name
         BOILER_PLATE_USER_IMPORT += "'\n"
     })
+
+    BOILER_PLATE_ROUTER_IMPORT += "import testRouter from './"
+    BOILER_PLATE_ROUTER_IMPORT += router_file_name
+    BOILER_PLATE_ROUTER_IMPORT += "'\n"
 }
 
 /**
@@ -161,7 +166,7 @@ const addLastRunBuildText = () => {
  * @description Add all the server settings to SERVER_FILE_NAME and SERVER_FILE_TEXT
  * @param {*} server_settings 
  */
-const addServerSettings = (server_settings) => {
+const addServerSettings = (server_settings, router_file_name) => {
     const { 
             server_path,
             server_file_name,
@@ -180,6 +185,9 @@ const addServerSettings = (server_settings) => {
     }
     if(server_file_name == undefined) {
         server_file_name = "server.test.js"
+    }
+    if(router_file_name == undefined) {
+        router_file_name = "router.test.js"
     }
     if(dependency_imports == undefined) {
         dependency_imports = [
@@ -213,7 +221,7 @@ const addServerSettings = (server_settings) => {
     
     if(!ERR_FLAG) {
         addServerFilePathName(server_path, server_file_name)
-        addImports(dependency_imports, user_imports)
+        addImports(dependency_imports, user_imports, router_file_name)
         addExpressParserMiddleware(data_post_limit)
         addUserRoutes(user_routes)
         addMongoDBURI(mongoDBURI)
@@ -224,9 +232,11 @@ const addServerSettings = (server_settings) => {
 
         SERVER_FILE_TEXT += BOILER_PLATE_DEPENDENCY_IMPORT + "\n"
         SERVER_FILE_TEXT += BOILER_PLATE_USER_IMPORT + "\n"
-        SERVER_FILE_TEXT += "const app = express()\n"  + "\n"
+        SERVER_FILE_TEXT += BOILER_PLATE_ROUTER_IMPORT + "\n"
+        SERVER_FILE_TEXT += "const app = express()\n" + "\n"
         SERVER_FILE_TEXT += EXPRESS_PARSER_MIDDLEWARE + "\n"
-        SERVER_FILE_TEXT += USER_ROUTES + "\n"
+        SERVER_FILE_TEXT += USER_ROUTES
+        SERVER_FILE_TEXT += "app.use('/', testRouter)\n" + "\n"
         SERVER_FILE_TEXT += MONGODB_CONNECTION_URI
         SERVER_FILE_TEXT += LOCALHOST_PORT + "\n"
         if(mocha_testing_enabled)
@@ -239,8 +249,8 @@ const addServerSettings = (server_settings) => {
  * @description Create test server file and write SERVER_FILE_TEXT into it
  * @param {*} server_settings 
  */
-const createServerFile = (server_settings) => {
-    addServerSettings(server_settings)
+const createServerFile = (server_settings, router_file_name) => {
+    addServerSettings(server_settings, router_file_name)
 
     if(!ERR_FLAG) {
         fs.writeFile(SERVER_FILE_NAME, SERVER_FILE_TEXT, (err) => {
