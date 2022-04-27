@@ -37,10 +37,34 @@ let router_settings = {
     ],
 }
 
+let schema = `{
+    "type": "object",
+    "properties": {
+        "name": {
+        "type": "string"
+      },
+      "age": {
+        "type": "integer",
+        "minimum": 10,
+        "maximum": 100
+    },
+    "married": {
+        "type": "boolean"
+    }
+    },
+    "required": [
+        "name",
+        "age",
+        "married"
+    ]
+}`
+
+
 let test_settings = {
-	mongoose_schema: [],
+    mongoose_schema: [],
     server_settings: server_settings,
     router_settings: router_settings,
+    schema : schema,
     n_intentional_right_cases: 20,
     n_intentional_wrong_cases: 20,
     n_edge_cases: 20,
@@ -98,6 +122,5 @@ let likePostAPI = {
 	url: "/posts/:id/likePost",
 	type: "PATCH",
 }
-
 
 generate_test_files(test_settings)
