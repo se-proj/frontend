@@ -1,5 +1,6 @@
 // import generate_test_files from 'tool_name'
-import generate_test_files from '../../../../coffee_break/index.mjs'
+// import generate_test_files from '../../../../coffee_break/index.mjs'
+import generate_test_files from 'coffee-break-api'
 import path from 'path'
 import { NONAME } from 'dns'
 
@@ -37,20 +38,20 @@ let router_settings = {
     ],
 }
 
-let schema = `{
+let person_schema = `{
     "type": "object",
     "properties": {
         "name": {
-        "type": "string"
-      },
-      "age": {
-        "type": "integer",
-        "minimum": 10,
-        "maximum": 100
-    },
-    "married": {
-        "type": "boolean"
-    }
+            "type": "string"
+        },
+        "age": {
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 100
+        },
+        "married": {
+            "type": "boolean"
+        }
     },
     "required": [
         "name",
@@ -59,69 +60,46 @@ let schema = `{
     ]
 }`
 
+// let createPostAPI = {
+//     description: "CREATE a post IN /posts",
+// 	url: "/posts",
+// 	type: "POST",
+// }
+
+// let getPostAPI = {
+//     description: "GET a post with a specific id FROM /posts/:id",
+// 	url: "/posts/:id",
+// 	type: "GET",
+// }
+
+// let updatePostAPI = {
+//     description: "UPDATE a post with a specific id IN /posts/:id",
+// 	url: "/posts/:id",
+// 	type: "PATCH",
+// }
+
+// let deletePostAPI = {
+//     description: "DELETE a post with a specific id FROM /posts/:id",
+// 	url: "/posts/:id",
+// 	type: "DELETE",
+// }
+
+// let likePostAPI = {
+//     description: "UPDATE the amount a likes a specific post gets IN /posts/:id/likePost",
+// 	url: "/posts/:id/likePost",
+// 	type: "PATCH",
+// }
 
 let test_settings = {
-    mongoose_schema: [],
+    mongoose_schema: [
+        {name: "person", schema: person_schema}
+    ],
     server_settings: server_settings,
     router_settings: router_settings,
-    schema : schema,
     n_intentional_right_cases: 20,
-    n_intentional_wrong_cases: 20,
-    n_edge_cases: 20,
+    n_intentional_wrong_cases: 0,
+    n_edge_cases: 0,
     apis: []
 }
 
-let getPostsAPI = {
-    description: "GET all posts FROM /posts",
-	url: "/posts",
-	type: "GET",
-    input_schema: null,
-    output_schema: {
-        title: String,
-        message: String,
-        creator: String,
-        tags: [String],
-        selectedFile: String,
-        likeCount: {
-            type: Number,
-            default: 0,
-        },
-        createdAt: {
-            type: Date,
-            default: new Date(),
-        },
-    }
-}
-
-let createPostAPI = {
-    description: "CREATE a post IN /posts",
-	url: "/posts",
-	type: "POST",
-}
-
-let getPostAPI = {
-    description: "GET a post with a specific id FROM /posts/:id",
-	url: "/posts/:id",
-	type: "GET",
-}
-
-let updatePostAPI = {
-    description: "UPDATE a post with a specific id IN /posts/:id",
-	url: "/posts/:id",
-	type: "PATCH",
-}
-
-let deletePostAPI = {
-    description: "DELETE a post with a specific id FROM /posts/:id",
-	url: "/posts/:id",
-	type: "DELETE",
-}
-
-let likePostAPI = {
-    description: "UPDATE the amount a likes a specific post gets IN /posts/:id/likePost",
-	url: "/posts/:id/likePost",
-	type: "PATCH",
-}
-
-// export default test_settings; 
 generate_test_files(test_settings)
