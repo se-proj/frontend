@@ -99,5 +99,5 @@ let likePostAPI = {
 	type: "PATCH",
 }
 
-
+// export default test_settings; 
 generate_test_files(test_settings)
