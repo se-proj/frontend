@@ -8,7 +8,7 @@ const generate_test_files = test_settings => {
 		test_settings.server_settings,
 		test_settings.router_settings.router_file_name
 	);
-	createObjectFile(test_settings.test_settings, test_settings.schema);
+	createObjectFile(test_settings.test_settings, test_settings.schema, test_settings.n_intentional_right_cases);
 };
 
 export default generate_test_files;
