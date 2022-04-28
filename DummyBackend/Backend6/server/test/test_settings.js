@@ -62,12 +62,15 @@ let post_schema = `{
 }`
 
 let createPostAPI = {
-    description: "CREATE a post IN /posts",
+    description: "CREATE posts IN /posts",
 	url: "/posts",
-	type: "POST",
+	http_type: "POST",
+    mongo_collection: "PostMessage",
     mongoose_action: "save",
     request_schema: {
         params: null,
+        auth: null,
+        header: null,
         body: {
             property: [
                 "title",
@@ -79,18 +82,46 @@ let createPostAPI = {
         }
     },
     response_schema: {
-        good_status: 201,
-        bad_status: 409,
-        body: {
-            type: "object",
-            filter_row: [],
-		    filter_column: [
-                "title",
-                "message",
-                "creator",
-                "likes"
-            ],
-        }
+        type: "object",
+        filter_row: [],
+        filter_column: [
+            "title",
+            "message",
+            "creator",
+            "likes"
+        ],
+        right_status: 201,
+		wrong_occurence: [
+			{status: 409, message: "#error.message"},
+		]
+    },
+}
+
+let getPostsAPI = {
+    description: "GET posts FROM /posts",
+	url: "/posts",
+	http_type: "GET",
+    mongo_collection: "PostMessage",
+    mongoose_action: "find",
+    request_schema: {
+        params: null,
+        auth: null,
+        header: null,
+        body: null,
+    },
+    response_schema: {
+        type: "object",
+        filter_row: [],
+        filter_column: [
+            "title",
+            "message",
+            "creator",
+            "likes"
+        ],
+        right_status: 200,
+		wrong_occurence: [
+			{status: 404, message: "#error.message"},
+		]
     },
 }
 
@@ -112,11 +143,6 @@ let createPostAPI = {
 // 	type: "DELETE",
 // }
 
-// let likePostAPI = {
-//     description: "UPDATE the amount a likes a specific post gets IN /posts/:id/likePost",
-// 	url: "/posts/:id/likePost",
-// 	type: "PATCH",
-// }
 
 let test_settings = {
     mongoose_schema: [
@@ -127,7 +153,7 @@ let test_settings = {
     n_intentional_right_cases: 20,
     n_intentional_wrong_cases: 0,
     n_edge_cases: 0,
-    apis: [createPostAPI]
+    apis: [createPostAPI, getPostsAPI]
 }
 
 generate_test_files(test_settings)

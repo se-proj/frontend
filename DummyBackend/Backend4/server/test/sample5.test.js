@@ -67,13 +67,6 @@ const postPostMessage = async () => {
     }
 }
 
-
-// console.log(res.method)
-// console.log(res.path)
-// console.log(res._ended)
-// console.log(res.aborted)
-// console.log(res.host)
-
 const getPostMessage = async () => {
     let api_log = "\n"
     let error_flag = false
@@ -151,15 +144,6 @@ const getPostMessage = async () => {
         console.log("%cAll cases successfully passed", "color: green")
 }
 
-// const starterPromise = Promise.resolve(null);
-
-// const asyncTasks = [
-//     {task: before},
-//     {task: postPostMessage},
-//     {task: getPostMessage},
-// ]
-
-
 setTimeout(() => {
     before()
 }, 2000)
@@ -169,30 +153,3 @@ setTimeout(() => {
 setTimeout(() => {
     getPostMessage()
 }, 6000)
-
-
-
-// const apiEndpoints = ["first", "second", "third"];
-
-// const apiCall = endpoint => {
-//     new Promise(resolve => setTimeout(resolve, 1000))
-//     return endpoint
-// }
-
-// const reduceApiEndpoints = async (previous, endpoint) => {
-//     const a = await previous;
-//     console.log(a)
-//     return apiCall(endpoint);
-//   };
-  
-// const sequential = await apiEndpoints.reduce(reduceApiEndpoints, Promise.resolve(null));
-
-
-// const sequentialExecuteAsyncFun = (prom, todo) => {
-//     await prom.task
-//     return todo
-// }
-
-// await asyncTasks.reduce(
-//     sequentialExecuteAsyncFun
-// )
