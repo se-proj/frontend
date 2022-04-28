@@ -1,6 +1,7 @@
 import createServerFile from "./create_server/index.mjs";
 import createRouterFile from "./create_router/index.mjs";
-import createObjectFile from "./create_object/index.mjs";
+// import createObjectFile from "./create_object/index.mjs";
+import { getObjArray, createObjectFile } from "./create_object/index.mjs";
 
 const generate_test_files = test_settings => {
 	createRouterFile(test_settings.router_settings);
@@ -9,6 +10,7 @@ const generate_test_files = test_settings => {
 		test_settings.router_settings.router_file_name
 	);
 	createObjectFile(test_settings.test_settings, test_settings.schema, test_settings.n_intentional_right_cases);
+	console.log(getObjArray());
 };
 
 export default generate_test_files;
