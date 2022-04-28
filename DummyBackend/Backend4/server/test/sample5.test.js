@@ -38,39 +38,61 @@ const before = async () => {
 let ERROR = false
 
 const postPostMessage = async () => {
-    console.log("POST description")
-    const len = PostMessage_DATA.length
-    for(let i = 0; i < len; i++) {
+    let api_log = "\n"
+    let error_flag = false
+    api_log += "POST description" + "\n"
+    const length = PostMessage_DATA.length
+    for(let i = 0; i < length; i++) {
+        api_log += "CASE " + i + ":\n"
         try {
             const res = await SERVER.post(`/posts`, PostMessage_DATA[i])
-            console.log(res.data)
-            // if(expect(res.data).to.have.status(200)) {
-            //     // console.log(res.data)
-            //     expect(res.data).to.be.a('array')
-            //     const len = res.data.length
-            //     expect(res.data).to.equal(len)
-            //     for(let j = 0; j < len; j++) {
-            //         expect(res.data[j]).to.have.property("title", PostMessage_DATA[j].title)
-            //         expect(res.data[j]).to.have.property("message", PostMessage_DATA[j].message)
-            //         expect(res.data[j]).to.have.property("creator", PostMessage_DATA[j].creator)
-            //         expect(res.data[j]).to.have.property("likes", PostMessage_DATA[j].likes)
-            //     }
-            // }
-            // else if(expect(res.data).to.have.status(409)) {
 
-            // }
+            if(res.status !== 201) {
+                api_log += "Incorrect Status: " + res.status + "\n"
+                error_flag = true
+            }
+            api_log += "status: " + res.status + "\n"
+            
+            const len = res.data.length
+    
+            if(typeof(res.data) === 'object' && len === undefined)
+                api_log += "type: object\n"
+            else {
+                api_log += "Object-type mis-match\n"
+                error_flag = true
+            }
+
+            for(let j = 0; j < filter_column.length; j++) {
+                if(!(filter_column[j] in res.data)) {
+                    api_log += filter_column[j] + " is not present in object in position " + i + " of " + "PostMessage"
+                    api += "\n"
+                    error_flag = true
+                }
+                else {
+                    if(PostMessage_DATA[i][filter_column[j]] !== res.data[filter_column[j]]) {
+                        api_log += "Value mis-match between resultant data and actual data in "
+                        api += filter_column[j] + " at position " + i + " of " + "PostMessage"
+                        api += "\n"
+                        error_flag = true
+                    }
+                }
+            }
         }
         catch(err) {
             console.log("Error while post: PostMessage")
             console.log(err)
         }
     }
+
+    console.log(api_log)
+    if(!error_flag)
+        console.log("%cAll cases successfully passed", "color: green")
 }
 
 const getPostMessage = async () => {
     let api_log = "\n"
     let error_flag = false
-    api_log += "GET description\n"
+    api_log += "GET description" + "\n"
     try {
         const res = await SERVER.get(`/posts`)
 
