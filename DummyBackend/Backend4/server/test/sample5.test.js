@@ -30,14 +30,18 @@ const before = async () => {
         console.log(res.data)
     }
     catch(err) {
+        ERROR = true
         console.log("before() function failed")
-        // console.log(err)
+        console.log(err)
+    }
+    finally {
+        post1_PostMessage();
     }
 }
 
 let ERROR = false
 
-const postPostMessage = async () => {
+const post1_PostMessage = async () => {
     let api_log = "\n"
     let error_flag = false
     api_log += "POST description" + "\n"
@@ -79,6 +83,7 @@ const postPostMessage = async () => {
             }
         }
         catch(err) {
+            error_flag = true
             console.log("Error while post: PostMessage")
             console.log(err)
         }
@@ -87,9 +92,11 @@ const postPostMessage = async () => {
     console.log(api_log)
     if(!error_flag)
         console.log("%cAll cases successfully passed", "color: green")
+
+    get2_PostMessage()
 }
 
-const getPostMessages = async () => {
+const get2_PostMessage = async () => {
     let api_log = "\n"
     let error_flag = false
     api_log += "GET description" + "\n"
@@ -156,6 +163,7 @@ const getPostMessages = async () => {
         }
     }
     catch(err) {
+        error_flag = true
         api_log += "Error while get: PostMessage\n"
         api_log += err
         api_log += "\n"
@@ -166,12 +174,14 @@ const getPostMessages = async () => {
         console.log("%cAll cases successfully passed", "color: green")
 }
 
-setTimeout(() => {
-    before()
-}, 2000)
-setTimeout(() => {
-    postPostMessage()
-}, 4000)
-setTimeout(() => {
-    getPostMessages()
-}, 6000)
+// setTimeout(() => {
+//     before()
+// }, 2000)
+// setTimeout(() => {
+//     post1_PostMessage()
+// }, 4000)
+// setTimeout(() => {
+//     get2_PostMessages()
+// }, 6000)
+
+before()
