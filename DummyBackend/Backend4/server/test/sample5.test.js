@@ -89,7 +89,7 @@ const postPostMessage = async () => {
         console.log("%cAll cases successfully passed", "color: green")
 }
 
-const getPostMessage = async () => {
+const getPostMessages = async () => {
     let api_log = "\n"
     let error_flag = false
     api_log += "GET description" + "\n"
@@ -264,5 +264,5 @@ setTimeout(() => {
     postPostMessage()
 }, 4000)
 setTimeout(() => {
-    getPostMessage()
+    getPostMessages()
 }, 6000)

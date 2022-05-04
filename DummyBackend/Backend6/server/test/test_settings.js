@@ -61,6 +61,8 @@ let post_schema = `{
     ]
 }`
 
+// API config
+
 let createPostAPI = {
     description: "CREATE posts IN /posts",
 	url: "/posts",
@@ -146,7 +148,7 @@ let getPostsAPI = {
 
 let test_settings = {
     mongoose_schema: [
-        {name: "post", schema: post_schema}
+        {name: "PostMessage", schema: post_schema}
     ],
     server_settings: server_settings,
     router_settings: router_settings,
