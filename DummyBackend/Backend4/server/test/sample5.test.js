@@ -89,7 +89,7 @@ const postPostMessage = async () => {
         console.log("%cAll cases successfully passed", "color: green")
 }
 
-const getPostMessages = async () => {
+const getPostMessage = async () => {
     let api_log = "\n"
     let error_flag = false
     api_log += "GET description" + "\n"
@@ -165,98 +165,7 @@ const getPostMessages = async () => {
     if(!error_flag)
         console.log("%cAll cases successfully passed", "color: green")
 }
-const updateData = (PostMessage_DATA)=>
-{
-    for (let i = 0; i < PostMessage_DATA.length; i++) {
-        changeAttributesvalue(PostMessage_DATA[i]);
-    }
-}
-const changeAttributesvalue = (PostMessage_DATA) =>
-{
-    Object.keys(PostMessage_DATA).forEach(function (key) {
-       if(typeof(PostMessage_DATA[key]) === 'string')
-       {
-           PostMessage_DATA[key] = PostMessage_DATA[key]+"_updated";
-        }
-        if(typeof(PostMessage_DATA[key]) === 'object')
-        {
-            changeAttributesvalue(PostMessage_DATA[key]);
-        }
-        if(typeof(PostMessage_DATA[key]) === 'array')
-        {
-            for(let i=0;i<PostMessage_DATA[key].length;i++)
-            {
-                changeAttributesvalue(PostMessage_DATA[key][i]);
-            }
-        }
-        if (typeof (PostMessage_DATA[key]) === 'number')
-        {
-            PostMessage_DATA[key] = PostMessage_DATA[key] + 1;
-        }
-    });
-}
-patchPatchMessage = async () => {
-    updateData(PostMessage_DATA);
-    let api_log = "\n"
-    let error_flag = false
-    api_log += "PATCH description" + "\n"
-    const length = PostMessage_DATA.length
-    for (let i = 0; i < length; i++) {
-        api_log += "CASE " + i + ":\n"
-        try {
-            const res = await SERVER.patch(`/posts/${PostMessage_DATA[i]._id}`, PostMessage_DATA[i])
-            if (res.status !== 200) {
-                api_log += "Incorrect Status: " + res.status + "\n"
-                error_flag = true
-            }
-            api_log += "status: " + res.status + "\n"
-            if (res.data.length !== undefined) {
-                api_log += "length: " + res.data.length + "\n"
-                if (res.data.length !== 1) {
-                    api_log += "Length Does not match\n"
-                    error_flag = true
-                }
-            }
-            else {
-                api_log += "Length is undefined\n"
-                error_flag = true
-            }
-            for (let j = 0; j < filter_column.length; j++) {
-                if (!(filter_column[j] in res.data[0])) {
-                    api_log += filter_column[j] + " is not present in object in position " + i + " of " + "PostMessage"
-                    api += "\n"
-                    error_flag = true
-                }
-                else {
-                    if (PostMessage_DATA[i][filter_column[j]] !== res.data[0][filter_column[j]]) {
-                        api_log += "Value mis-match between resultant data and actual data in "
-                        api += filter_column[j] + " at position " + i + " of " + "PostMessage"
-                        api += "\n"
-                        error_flag = true
-                    }
-                }
-            }
-            if (error_flag) {
-                ERROR = true
-                throw err
-            }
-        }
-        catch (err) {
-            api_log += "Error while patch: PostMessage\n"
-            api_log += err
-            api_log += "\n"
-        }
-    }
-    console.log(api_log)
-    if (!error_flag)
-        console.log("%cAll cases successfully passed", "color: green")
-}
 
-
-            
-
-            
-              
 setTimeout(() => {
     before()
 }, 2000)
@@ -264,5 +173,5 @@ setTimeout(() => {
     postPostMessage()
 }, 4000)
 setTimeout(() => {
-    getPostMessages()
+    getPostMessage()
 }, 6000)
