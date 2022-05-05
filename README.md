@@ -34,7 +34,7 @@
 
 In the modern software development world, APIs are proving to be the most widely used software intermediary that allows two applications to talk to each other. This makes it an essential component in every development project. One professional project implements more than hundreds or thousands of APIs that only continues to scale-up in future releases.
 
-Testing these APIs becomes an essential part of the development process because one single error in design or implementation could lead to a greater issue which may affect security, robustness or may crash the application/tool on an edge case.
+Testing these APIs becomes an essential part of the development process because a single error in design or implementation could lead to a greater issue which may affect security, robustness or may crash the application/tool on an edge case.
 
 <br>
 
