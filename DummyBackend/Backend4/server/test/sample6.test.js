@@ -163,61 +163,64 @@ const getPostMessages = async () => {
 }
 
 
-const changeAttributesvalue = (PostMessage_DATA) => {
-    Object.keys(PostMessage_DATA).forEach(function (key) {
-        if (typeof (PostMessage_DATA[key]) === 'string') {
+const changeAttributesvalue = (query_data) => {
+    Object.keys(query_data).forEach(function (key) {
+        if (typeof (query_data[key]) === 'string') {
             const randomstring = Math.random().toString(36).substring(7);
-            PostMessage_DATA[key] = PostMessage_DATA[key] + randomstring
+            query_data[key] = query_data[key] + randomstring
         }
-        if (typeof (PostMessage_DATA[key]) === 'object') {
-            changeAttributesvalue(PostMessage_DATA[key]);
+        if (typeof (query_data[key]) === 'object') {
+            changeAttributesvalue(query_data[key]);
         }
-        if (typeof (PostMessage_DATA[key]) === 'array') {
-            for (let i = 0; i < PostMessage_DATA[key].length; i++) {
-                changeAttributesvalue(PostMessage_DATA[key][i]);
+        if (typeof (query_data[key]) === 'array') {
+            for (let i = 0; i < query_data[key].length; i++) {
+                changeAttributesvalue(query_data[key][i]);
             }
         }
-        if (typeof (PostMessage_DATA[key]) === 'number') {
+        if (typeof (query_data[key]) === 'number') {
             const randomnum = Math.floor(Math.random() * 10);
-            PostMessage_DATA[key] = PostMessage_DATA[key] + randomnum
+            query_data[key] = query_data[key] + randomnum
         }
     });
 }
 
-
-const updateData = (PostMessage_DATA) => {
-    for (let i = 0; i < PostMessage_DATA.length; i++) {
-        changeAttributesvalue(PostMessage_DATA[i]);
+const updateData = (query_data) => {
+    for (let i = 0; i < query_data.length; i++) {
+        changeAttributesvalue(query_data[i]);
     }
 }
 // updateData(PostMessage_DATA);
 // console.log(PostMessage_DATA);
 const patchPostMessage = async () => {
     updateData(PostMessage_DATA);
-    // console.log(PostMessage_DATA);
+    console.log(PostMessage_DATA);
     let api_log = "\n"
     let error_flag = false
     api_log += "PATCH description" + "\n"
     const length = PostMessage_DATA.length
     for (let i = 0; i < length; i++) {
-        api_log += "CASE " + i + ":\n"
+        api_log += "CASE " + (i + 1) + ":\n"
         try {
-            const res = await SERVER.patch(`/posts/${PostMessage_DATA[i]._id}`, PostMessage_DATA[i])
+            const id = PostMessage_DATA[i]["_id"]
+            const res = await SERVER.patch(`/posts/${id}`, PostMessage_DATA[i])
+
+            console.log(res.status)
             if (res.status !== 200) {
                 api_log += "Incorrect Status: " + res.status + "\n"
                 error_flag = true
             }
             api_log += "status: " + res.status + "\n"
-            if (res.data.length !== undefined) {
-                api_log += "length: " + res.data.length + "\n"
-                if (res.data.length !== 1) {
-                    api_log += "Length Does not match\n"
-                    error_flag = true
-                }
-            } else {
-                api_log += "Length is undefined\n"
+
+            const len = res.data.length
+
+            if(typeof(res.data) === 'object' && len === undefined)
+                api_log += "type: object\n"
+            else {
+                api_log += "Object-type mis-match\n"
                 error_flag = true
             }
+			const filter_column = ["title","message","creator","likes"]
+
             for (let j = 0; j < filter_column.length; j++) {
                 if (!(filter_column[j] in res.data[0])) {
                     api_log += filter_column[j] + " is not present in object in position " + i + " of " + "PostMessage"
@@ -240,6 +243,7 @@ const patchPostMessage = async () => {
             api_log += "Error while patch: PostMessage\n"
             api_log += err
             api_log += "\n"
+            ERROR = true
         }
     }
     console.log(api_log)
