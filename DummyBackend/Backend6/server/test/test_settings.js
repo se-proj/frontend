@@ -99,7 +99,7 @@ let createPostAPI = {
     },
 }
 
-let getPostsAPI = {
+let getPostsAPI1 = {
     description: "GET posts FROM /posts",
 	url: "/posts",
 	http_type: "GET",
@@ -120,6 +120,29 @@ let getPostsAPI = {
             "creator",
             "likes"
         ],
+        right_status: 200,
+		wrong_occurence: [
+			{status: 404, message: "#error.message"},
+		]
+    },
+}
+
+let deletePostsAPI = {
+    description: "DELETE posts FROM /posts",
+	url: "/posts",
+	http_type: "DELETE",
+    mongo_collection: "PostMessage",
+    mongoose_action: "findByIdAndRemove",
+    request_schema: {
+        params: null,
+        auth: null,
+        header: null,
+        body: null,
+    },
+    response_schema: {
+        type: null,
+        filter_row: [],
+        filter_column: [],
         right_status: 200,
 		wrong_occurence: [
 			{status: 404, message: "#error.message"},
@@ -155,7 +178,7 @@ let test_settings = {
     n_intentional_right_cases: 20,
     n_intentional_wrong_cases: 0,
     n_edge_cases: 0,
-    apis: [createPostAPI, getPostsAPI]
+    apis: [createPostAPI, getPostsAPI1, deletePostsAPI]
 }
 
 generate_test_files(test_settings)

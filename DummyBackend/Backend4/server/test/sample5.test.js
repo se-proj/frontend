@@ -24,6 +24,8 @@ const filter_column = [
     "likes"
 ]
 
+let ERROR = false
+
 const before = async () => {
     try {
         const res = await SERVER.delete('/', {})
@@ -38,8 +40,6 @@ const before = async () => {
         post1_PostMessage();
     }
 }
-
-let ERROR = false
 
 const post1_PostMessage = async () => {
     let api_log = "\n"
@@ -80,6 +80,15 @@ const post1_PostMessage = async () => {
                         error_flag = true
                     }
                 }
+            }
+
+            if(!("_id" in res.data)) {
+                api_log += "_id" + " is not present in object in position " + i + " of " + "PostMessage"
+                api += "\n"
+                error_flag = true
+            }
+            else {
+                PostMessage_DATA[i]._id = res.data._id
             }
         }
         catch(err) {
@@ -131,15 +140,6 @@ const get2_PostMessage = async () => {
         }
         
         for(let i = 0; i < len; i++) {
-            if(!("_id" in res.data[i])) {
-                api_log += "_id" + " is not present in object in position " + i + " of " + "PostMessage"
-                api += "\n"
-                error_flag = true
-            }
-            else {
-                PostMessage_DATA[i]._id = res.data[i]._id
-            }
-
             for(let j = 0; j < filter_column.length; j++) {
                 if(!(filter_column[j] in res.data[i])) {
                     api_log += filter_column[j] + " is not present in object in position " + i + " of " + "PostMessage"
@@ -172,6 +172,40 @@ const get2_PostMessage = async () => {
     console.log(api_log)
     if(!error_flag)
         console.log("%cAll cases successfully passed", "color: green")
+    
+    delete4_PostMessage()
+}
+
+const delete4_PostMessage = async () => {
+    let api_log = "\n"
+    let error_flag = false
+    api_log += "DELETE description" + "\n"
+    const length = PostMessage_DATA.length
+    for(let i = 0; i < length; i++) {
+        api_log += "CASE " + i + ":\n"
+        const id = PostMessage_DATA[i]["_id"]
+        console.log(id)
+        try {
+            const res = await SERVER.delete(`/posts/${id}`)
+
+            if(res.status >= 200 && res.status <= 299) {
+                api_log += "status: " + res.status + "\n"
+            }
+            else {
+                error_flag = true
+            }
+            
+        }
+        catch(err) {
+            error_flag = true
+            console.log("Error while post: PostMessage")
+            console.log(err)
+        }
+    }
+
+    console.log(api_log)
+    if(!error_flag)
+        console.log("All cases successfully passed")
 }
 
 // setTimeout(() => {
