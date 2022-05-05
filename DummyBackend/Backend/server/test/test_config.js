@@ -1,8 +1,5 @@
 import generate_test_files from 'coffee-break-api'
 import path from 'path'
-import { NONAME } from 'dns'
-
-// path.resolve() returns pwd
 
 let server_settings = {
     server_path: path.resolve(),
@@ -127,37 +124,6 @@ let getPostsAPI1 = {
     },
 }
 
-let updatePostsAPI = {
-    description: "UPDATE posts FROM /posts",
-	url: "/posts",
-	http_type: "PATCH",
-    mongo_collection: "PostMessage",
-    mongoose_action: "findByIdAndUpdate",
-    request_schema: {
-        params: ["_id"],
-        auth: null,
-        header: null,
-        body: {
-            property: [
-                "title",
-                "message",
-                "creator",
-                "likes"
-            ],
-            schema: post_schema
-        },
-    },
-    response_schema: {
-        type: null,
-        filter_row: [],
-        filter_column: [],
-        right_status: 200,
-		wrong_occurence: [
-			{status: 404, message: "#error.message"},
-		]
-    },
-}
-
 let deletePostsAPI = {
     description: "DELETE posts FROM /posts",
 	url: "/posts",
@@ -181,13 +147,6 @@ let deletePostsAPI = {
     },
 }
 
-// let getPostAPI = {
-//     description: "GET a post with a specific id FROM /posts/:id",
-// 	url: "/posts/:id",
-// 	type: "GET",
-// }
-
-
 let test_settings = {
     mongoose_schema: [
         {name: "PostMessage", schema: post_schema}
@@ -197,7 +156,6 @@ let test_settings = {
     n_intentional_right_cases: 20,
     n_intentional_wrong_cases: 0,
     n_edge_cases: 0,
-    apis: [createPostAPI, getPostsAPI1, updatePostsAPI, deletePostsAPI]
+    apis: [createPostAPI, getPostsAPI1, deletePostsAPI]
 }
-//updatePostsAPI
 generate_test_files(test_settings)
