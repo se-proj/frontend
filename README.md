@@ -92,33 +92,112 @@ The product receives input or data, but it does not validate or incorrectly vali
 <br>
 
 * There are 2 main parts to the project: `Server Generation` and `Test Generation`.
-* Server generation includes creating server and creating router.
+* `Server generation` includes creating server and creating router.
 * A server_settings object is required to create a server.
-
-```
-server_settings = {
-    server_path: String, [default: same dir as test_config.js] (mandatory),
-    server_file_name: String [default: “server.test.js”],
-    dependency_imports: array of objects {package_import: String, package_name: String}
-        [(mandatory and default): [
-            {package_import: "express", package_name: "express"},
-            {package_import: "bodyParser", package_name: "body-parser"},
-            {package_import: "mongoose", package_name: "mongoose"},
-            {package_import: "cors", package_name: "cors"},
-        ]],
-    user_imports: array of objects (mandatory) {user_import: String, user_import_name: String},
-    data_post_limit: String, [default: "64mb"],
-    user_routes: array of objects
-        {use_routes_base_url: String, use_routes_import_name: String}
-    mongoDBURI: String (mandatory)
-    port: String, [default: "5100"],
-}
-```
+    Attribute | Type | Mandatory | Default
+    ----------|------|-----------|---------
+    server_path | String | Yes | same directory as test_config.js
+    server_file_name | String | No | server.test.js
+    dependency_imports | array of objects | Yes | express, bodyParser, mongoose, cors
+    user_imports | array of objects | Yes | None
+    data_post_limit | String | No | 64mb
+    user_routes | array of objects | Yes | None
+    mongoDBURI | String | Yes | None
+    port | String | No | 5100
 
 * A router_serttings object is required to create a router.
+    Attribute | Type | Mandatory | Default
+    ----------|------|-----------|---------
+    router_path | String | Yes | same directory as test_config.js
+    router_file_name | String | No | router.test.js
+    dependency_imports | array of objects | Yes | express, bodyParser, mongoose, cors
+    mongoose_model | array of objects | Yes | None
 
+* Mongoose schema is also to be provided by user. This is provided as a mutiline stringified JSON object.
+* Details about api could be provided through individual objects in this format.
+    * API object: 
+    
+    Attribute | Type | Mandatory 
+    ----------|------|-----------
+    description | String | No
+    url | String | Yes
+    http_type | String | Yes
+    mongo_collection | String | Yes
+    mongoose_action | String | Yes
+    request_schema | array of objects | Yes
+    response_schema | array of objects | Yes
+
+    * Request Schema object:
+    
+    Attribute | Type | Mandatory | Default
+    ----------|------|-----------|--------
+    params | array | Yes | null
+    auth | String | Yes | null
+    header | String | Yes | null
+    body | object | Yes | null
+
+    * Response Schema object:
+    
+    Attribute | Type | Mandatory | Default
+    ----------|------|-----------|--------
+    type | String | Yes | "object"
+    filter_row | array | Yes | []
+    filter_column | array | Yes | mongoose_schema
+    right_status | Number | Yes | 200
+    wrong_occurence | array of objects | Yes | None
+
+* `Test Generation` is the main part of project. This part consists of mapping of input to output for the 4 http methods. The possible input and output for the 4 http methods are:
+
+Type: GET  
+Input:	None, Id, List of conditions  
+Output:	None, Array of Objects, Object, Primitive Data type  
+
+Type: POST  
+Input:	Id, List of conditions  
+Output:	None, Array of Objects, Object, Primitive Data type  
+
+Type: PATCH  
+Input:	Id, Object  
+Output:	None, Array of Objects, Object, Primitive Data type  
+
+Type: DELETE  
+Input:	None, Id, List of conditions  
+Output:	None, Array of Objects, Object, Primitive Data type  
+
+Out of this 
+* GET: None - Array of Objects;
+* POST: None - Object;
+* PATCH: Id - Object;
+* DELETE: Id - None;
+pairs are implemented.
+
+An example for test_config.js: 
 ```
-router_settings = {
+import generate_test_files from 'coffee-break-api'
+import path from 'path'
+
+let server_settings = {
+    server_path: path.resolve(),
+    server_file_name: "server.test.js",
+    dependency_imports: [
+        {package_import: "express", package_name: "express"},
+        {package_import: "bodyParser", package_name: "body-parser"},
+        {package_import: "mongoose", package_name: "mongoose"},
+        {package_import: "cors", package_name: "cors"},
+    ],
+    user_imports: [
+        {user_import: "postRoutes", user_import_name: "./../routes/posts.js"},
+    ],
+    data_post_limit: "30mb",
+    user_routes: [
+        {use_routes_base_url: "/posts", use_routes_import_name: "postRoutes"}
+    ],
+    mongoDBURI: "mongodb+srv://iitsemproject:iitsemproject889@cluster0.mpfjb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    port: "5100",
+    mocha_testing_enabled: true, 
+}
+
+let router_settings = {
     router_path: path.resolve(),
     router_file_name: "router.test.js",
     dependency_imports: [
@@ -128,27 +207,134 @@ router_settings = {
         {name: "PostMessage", path: "../models/postMessage.js"},
     ],
 }
+
+let post_schema = `{
+    "type": "object",
+    "properties": {
+        "title": {
+            "type": "string"
+        },
+        "message": {
+            "type": "string"
+        },
+        "creator": {
+            "type": "string"
+        },
+        "likes": {
+            "type": "integer",
+            "minimum": 0
+        }
+    },
+    "required": [
+        "title",
+        "message",
+        "creator",
+        "likes"
+    ]
+}`
+
+// API config
+
+let createPostAPI = {
+    description: "CREATE posts IN /posts",
+	url: "/posts",
+	http_type: "POST",
+    mongo_collection: "PostMessage",
+    mongoose_action: "save",
+    request_schema: {
+        params: null,
+        auth: null,
+        header: null,
+        body: {
+            property: [
+                "title",
+                "message",
+                "creator",
+                "likes"
+            ],
+            schema: post_schema
+        }
+    },
+    response_schema: {
+        type: "object",
+        filter_row: [],
+        filter_column: [
+            "title",
+            "message",
+            "creator",
+            "likes"
+        ],
+        right_status: 201,
+		wrong_occurence: [
+			{status: 409, message: "#error.message"},
+		]
+    },
+}
+
+let getPostsAPI1 = {
+    description: "GET posts FROM /posts",
+	url: "/posts",
+	http_type: "GET",
+    mongo_collection: "PostMessage",
+    mongoose_action: "find",
+    request_schema: {
+        params: null,
+        auth: null,
+        header: null,
+        body: null,
+    },
+    response_schema: {
+        type: "object",
+        filter_row: [],
+        filter_column: [
+            "title",
+            "message",
+            "creator",
+            "likes"
+        ],
+        right_status: 200,
+		wrong_occurence: [
+			{status: 404, message: "#error.message"},
+		]
+    },
+}
+
+let deletePostsAPI = {
+    description: "DELETE posts FROM /posts",
+	url: "/posts",
+	http_type: "DELETE",
+    mongo_collection: "PostMessage",
+    mongoose_action: "findByIdAndRemove",
+    request_schema: {
+        params: null,
+        auth: null,
+        header: null,
+        body: null,
+    },
+    response_schema: {
+        type: null,
+        filter_row: [],
+        filter_column: [],
+        right_status: 200,
+		wrong_occurence: [
+			{status: 404, message: "#error.message"},
+		]
+    },
+}
+
+let test_settings = {
+    mongoose_schema: [
+        {name: "PostMessage", schema: post_schema}
+    ],
+    server_settings: server_settings,
+    router_settings: router_settings,
+    n_intentional_right_cases: 20,
+    n_intentional_wrong_cases: 0,
+    n_edge_cases: 0,
+    apis: [createPostAPI, getPostsAPI1, deletePostsAPI]
+}
+generate_test_files(test_settings)
 ```
-
-* 
-* 
-* 
-
-Type:		GET  
-Input:	None, Id, List of conditions  
-Output:	None, Array of Objects, Object, Primitive Data type  
-
-Type:		POST  
-Input:	Id, List of conditions  
-Output:	None, Array of Objects, Object, Primitive Data type  
-
-Type:		PATCH  
-Input:	Id, Object  
-Output:	None, Array of Objects, Object, Primitive Data type  
-
-Type:		DELETE  
-Input:	None, Id, List of conditions  
-Output:	None, Array of Objects, Object, Primitive Data type  
 
 <br>
 
