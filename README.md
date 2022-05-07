@@ -172,7 +172,7 @@ Out of this
 pairs are implemented.
 
 An example for test_config.js: 
-```
+```js
 import generate_test_files from 'coffee-break-api'
 import path from 'path'
 
@@ -334,7 +334,7 @@ let test_settings = {
     apis: [createPostAPI, getPostsAPI1, deletePostsAPI]
 }
 generate_test_files(test_settings)
-```js
+```
 
 Refer to this [example](https://github.com/se-proj/frontend/tree/main/DummyBackend/Backend/server) for more details on implementation
 
