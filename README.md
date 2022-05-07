@@ -334,7 +334,9 @@ let test_settings = {
     apis: [createPostAPI, getPostsAPI1, deletePostsAPI]
 }
 generate_test_files(test_settings)
-```
+```js
+
+Refer to this [example](https://github.com/se-proj/frontend/tree/main/DummyBackend/Backend/server) for more details on implementation
 
 <br>
 
