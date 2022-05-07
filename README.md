@@ -21,10 +21,12 @@
     4) [Restrictions](#restrictions)
 6) [Future Work](#future-work)
 7) [Dependencies](#dependencies)
+    1) [Package Dependencies](#package-dependencies)
+    2) [User Dependencies](#user-dependencies)
 8) [Repo Folder Structure](#repo-folder-structure)
 9) [For Developers](#for-developers)
-9) [Team and Contact](#team-and-contact)
-10) [List of implementable CWEs](#list-of-implementable-cwes)
+10) [Team and Contact](#team-and-contact)
+11) [List of implementable CWEs](#list-of-implementable-cwes)
 
 <br>
 
@@ -389,6 +391,9 @@ Refer to this [example](https://github.com/se-proj/frontend/tree/main/DummyBacke
 
 <br>
 
+* Sophesticate and Optimize the MAPPING process implementation.
+* Complete the rest of pairs in the maps.
+* Find ways to incorporte important CWEs as mentioned in the [list of implementatble CWEs](#list-of-implementable-cwes)
 * Automate the MAPPING process by scanning and directly reading the required API files.
 * API files are provided as input to the tool which will identify the APIs.
 
@@ -398,22 +403,21 @@ Refer to this [example](https://github.com/se-proj/frontend/tree/main/DummyBacke
 
 <br>
 
-Config File  
-* test_config.js
-    * [path](https://www.npmjs.com/package/path) (recommended)
+### Package Dependencies
 
-Generated Files
-* server.test.js :
-    * [express](https://www.npmjs.com/package/express), 
-    * [body-parser](https://www.npmjs.com/package/body-parser), 
-    * [mongoose](https://www.npmjs.com/package/mongoose), 
-    * [cors](https://www.npmjs.com/package/cors)
-* router.test.js : []()
-* run.test.js : []()
+* [fs](https://www.npmjs.com/package/fs) for creating and writing files
+* [faker js](https://github.com/faker-js/faker) for creating random objects for data sets
 
-Coffee-break Files
-* create_server.js : [fs](https://www.npmjs.com/package/fs)
-* create_router.js : 
+### User Dependencies
+
+These are the dependencies that the tool wants the user to have installed
+
+* [path](https://www.npmjs.com/package/path)
+* [express](https://www.npmjs.com/package/express), 
+* [body-parser](https://www.npmjs.com/package/body-parser), 
+* [mongoose](https://www.npmjs.com/package/mongoose), 
+* [cors](https://www.npmjs.com/package/cors)
+* [axios](https://www.npmjs.com/package/axios)
 
 <br>
 
@@ -439,7 +443,11 @@ Coffee-break Files
 
 <br>
 
+The above information provided under [How it Works?](#how-it-works) provides the necessary details to continue the work. The below are a few useful links for simple navigation
 
+[Tool Demonstration Video](https://drive.google.com/file/d/1fkkXkBvDEyM-X9aAqXJIoUYdPQOdw64D/view?usp=sharing)  
+[npm page for coffee-break-api](https://www.npmjs.com/package/coffee-break-api)
+[github page for coffee-break-api](https://github.com/se-proj/_coffee_break)
 
 <br>
 
